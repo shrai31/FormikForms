@@ -2,7 +2,6 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../components/FormikControl'
-// import FormikControl from './FormikControl'
 
 function RegistrationForm () {
   const options = [
@@ -26,10 +25,16 @@ function RegistrationForm () {
       .oneOf([Yup.ref('password'), ''], 'Passwords must match')
       .required('Required'),
     modeOfContact: Yup.string().required('Required'),
-    phone: Yup.string().when('modeOfContact', {
-      is: 'telephonemoc',
-      then: Yup.string().required('Required')
-    })
+    phone: Yup.string()
+      .matches(
+        /^[a-zA-Z0-9]{15}$/,
+        // /^[ A-Za-z0-9]*$/,
+        //^(AB|DE|GH)[a-zA-Z0-9]{15}$   //--> to fix the tarting alphabet
+        // /^([1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]|)$/,   //-->  number between 1 to 10^9 
+        // /^[a-z]+$/,     // --> All aplhabet
+        "Not a Phone number"
+      )
+      .required("Required"),
   })
 
   const onSubmit = values => {
